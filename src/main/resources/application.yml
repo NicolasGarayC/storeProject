@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://storedbas.database.windows.net:1433;database=storeDB;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+    username: admin1
+    password: Jngc1298-
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      dialect: org.hibernate.dialect.SQLServer2012Dialect
+
+server:
+  port: 9090
