@@ -16,5 +16,36 @@ public class Country {
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<User> users;
 
-    // Getters and setters omitted for brevity
+    public Country(Integer id, String country, Set<User> users) {
+        this.id = id;
+        this.country = country;
+        this.users = users;
+    }
+
+    public Country() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 }

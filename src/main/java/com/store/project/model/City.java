@@ -17,5 +17,36 @@ public class City {
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<User> users;
 
-    // Getters and setters omitted for brevity
+    public City(Integer id, String city, Set<User> users) {
+        this.id = id;
+        this.city = city;
+        this.users = users;
+    }
+
+    public City() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 }
