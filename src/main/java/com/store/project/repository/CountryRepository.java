@@ -6,5 +6,4 @@ import com.store.project.model.Country;
 
 @Repository
 public interface CountryRepository extends JpaRepository<Country, Integer> {
-    // Métodos CRUD heredados
 }

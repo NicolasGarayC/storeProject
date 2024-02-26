@@ -14,10 +14,10 @@ public class City {
     @Column(nullable = false, length = 50)
     private String city;
 
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<User> users;
+    @OneToOne(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private User users;
 
-    public City(Integer id, String city, Set<User> users) {
+    public City(Integer id, String city, User users) {
         this.id = id;
         this.city = city;
         this.users = users;
@@ -42,11 +42,11 @@ public class City {
         this.city = city;
     }
 
-    public Set<User> getUsers() {
+    public User getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(User users) {
         this.users = users;
     }
 }

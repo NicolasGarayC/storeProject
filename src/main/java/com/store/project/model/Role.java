@@ -14,10 +14,10 @@ public class Role {
     @Column(nullable = false, length = 50)
     private String role;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<User> users;
+    @OneToOne(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private User users;
 
-    public Role(Integer id, String role, Set<User> users) {
+    public Role(Integer id, String role, User users) {
         this.id = id;
         this.role = role;
         this.users = users;
@@ -42,11 +42,11 @@ public class Role {
         this.role = role;
     }
 
-    public Set<User> getUsers() {
+    public User getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(User users) {
         this.users = users;
     }
 }

@@ -13,10 +13,11 @@ public class Category {
     @Column(nullable = false, length = 50)
     private String category;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Book> books;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "book_id") // Este es el nombre de la columna de llave foránea en la tabla de Category
+    private Book books;
 
-    public Category(Integer id, String category, Set<Book> books) {
+    public Category(Integer id, String category, Book books) {
         this.id = id;
         this.category = category;
         this.books = books;
@@ -41,11 +42,11 @@ public class Category {
         this.category = category;
     }
 
-    public Set<Book> getBooks() {
+    public Book getBooks() {
         return books;
     }
 
-    public void setBooks(Set<Book> books) {
+    public void setBooks(Book books) {
         this.books = books;
     }
 }

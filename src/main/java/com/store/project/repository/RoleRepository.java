@@ -6,5 +6,4 @@ import com.store.project.model.Role;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Integer> {
-    // Métodos CRUD heredados
 }

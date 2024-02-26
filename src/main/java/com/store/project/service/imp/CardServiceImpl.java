@@ -21,11 +21,6 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Card saveCard(Card card) {
-        return cardRepository.save(card);
-    }
-
-    @Override
     public Optional<Card> getCardById(Integer id) {
         return cardRepository.findById(id);
     }
@@ -41,7 +36,19 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void deleteCardById(Integer id) {
-        cardRepository.deleteById(id);
+    public Card rechargeCardByUserId(Integer userId, Double amount) throws Exception {
+        Card card = cardRepository.findByUserId(userId);
+        if (card == null) {
+            throw new Exception("Card not found for user ID: " + userId);
+        }
+
+        // Validar el monto de recarga
+        if (amount < 50000 || amount > 200000) {
+            throw new IllegalArgumentException("Amount must be between 50,000 and 200,000.");
+        }
+
+        // Actualizar el balance de la tarjeta
+        card.setBalance(card.getBalance() + amount);
+        return cardRepository.save(card);
     }
 }

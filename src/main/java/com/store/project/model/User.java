@@ -16,15 +16,15 @@ public class User {
     @Column(nullable = false, length = 20)
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role", nullable = false)
     private Role role;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country", nullable = false)
     private Country country;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city", nullable = false)
     private City city;
 

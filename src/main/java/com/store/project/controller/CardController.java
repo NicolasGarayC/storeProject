@@ -8,6 +8,7 @@ import com.store.project.model.Card;
 import com.store.project.service.CardService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -21,11 +22,6 @@ public class CardController {
         this.cardService = cardService;
     }
 
-    @PostMapping
-    public ResponseEntity<Card> createCard(@RequestBody Card card) {
-        Card savedCard = cardService.saveCard(card);
-        return new ResponseEntity<>(savedCard, HttpStatus.CREATED);
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Card> getCardById(@PathVariable Integer id) {
@@ -47,9 +43,14 @@ public class CardController {
         return new ResponseEntity<>(updatedCard, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteCard(@PathVariable Integer id) {
-        cardService.deleteCardById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PostMapping("/recharge/user/{userId}")
+    public ResponseEntity<?> rechargeCardByUserId(@PathVariable Integer userId, @RequestBody Map<String, Double> payload) {
+        try {
+            Double amount = payload.get("amount");
+            Card updatedCard = cardService.rechargeCardByUserId(userId, amount);
+            return ResponseEntity.ok(updatedCard);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

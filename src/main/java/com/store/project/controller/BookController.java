@@ -8,6 +8,9 @@ import com.store.project.service.BookService;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 
 @RestController
 @RequestMapping("/books")
@@ -50,5 +53,15 @@ public class BookController {
     public ResponseEntity<HttpStatus> deleteBook(@PathVariable Integer id) {
         bookService.deleteBookById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<Book>> findBooks(
+            @RequestParam(required = false) Integer id,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String isbn,
+            @PageableDefault(sort = "id") Pageable pageable) {
+        Page<Book> books = bookService.findBooks(id, title, isbn, pageable);
+        return new ResponseEntity<>(books, HttpStatus.OK);
     }
 }

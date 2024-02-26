@@ -5,4 +5,5 @@ import com.store.project.model.Card;
 
 @Repository
 public interface CardRepository extends JpaRepository<Card, Integer> {
+    Card findByUserId(Integer userId);
 }

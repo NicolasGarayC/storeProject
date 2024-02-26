@@ -6,7 +6,6 @@ import java.util.Optional;
 
 public interface CardService {
 
-    Card saveCard(Card card);
 
     Optional<Card> getCardById(Integer id);
 
@@ -14,5 +13,6 @@ public interface CardService {
 
     Card updateCard(Card card);
 
-    void deleteCardById(Integer id);
+    Card rechargeCardByUserId(Integer userId, Double amount) throws Exception;
+
 }

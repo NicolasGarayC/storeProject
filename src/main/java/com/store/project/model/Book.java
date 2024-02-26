@@ -25,7 +25,7 @@ public class Book {
     @Column(name = "image", nullable = false)
     private String image;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category", nullable = false)
     private Category category;
 
