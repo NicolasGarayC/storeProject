@@ -36,6 +36,12 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    public Card saveCard(Card card) {
+        return cardRepository.save(card);
+    }
+
+
+    @Override
     public Card rechargeCardByUserId(Integer userId, Double amount) throws Exception {
         Card card = cardRepository.findByUserId(userId);
         if (card == null) {

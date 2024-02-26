@@ -14,18 +14,19 @@ public class Card {
     @JoinColumn(name = "Associed_id", nullable = false)
     private User user;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Double Balance;
+    @Column(nullable = false, length = 50)
+
+    private Double balance;
 
 
     public Card(Integer cardNumber, User user) {
         this.cardNumber = cardNumber;
         this.user = user;
-        this.Balance = 0.00;
+        this.balance = 0.00;
     }
 
     public Card() {
-        this.Balance = 0.00;
+        this.balance = 0.00;
     }
 
     public Integer getCardNumber() {
@@ -45,10 +46,10 @@ public class Card {
     }
 
     public Double getBalance() {
-        return Balance;
+        return balance;
     }
 
     public void setBalance(Double balance) {
-        Balance = balance;
+        balance = balance;
     }
 }
