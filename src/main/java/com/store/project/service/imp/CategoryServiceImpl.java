@@ -12,12 +12,9 @@ import java.util.Optional;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    private final CategoryRepository categoryRepository;
-
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
+    private CategoryRepository categoryRepository;
+
 
     @Override
     public Category saveCategory(Category category) {

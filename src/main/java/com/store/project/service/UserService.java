@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface UserService {
 
 
-    User saveUser(User user);
+    void saveUser(User user);
 
 
     Optional<User> getUserById(Integer id);
@@ -17,4 +17,6 @@ public interface UserService {
     User updateUser(User user);
 
     void deleteUserById(Integer id);
+
+    String validarContrasena(String nuevaContrasenia);
 }

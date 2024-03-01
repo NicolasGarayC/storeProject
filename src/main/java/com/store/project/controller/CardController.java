@@ -15,13 +15,8 @@ import java.util.Optional;
 @RequestMapping("/cards")
 public class CardController {
 
-    private final CardService cardService;
-
     @Autowired
-    public CardController(CardService cardService) {
-        this.cardService = cardService;
-    }
-
+    private CardService cardService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Card> getCardById(@PathVariable Integer id) {
@@ -46,6 +41,7 @@ public class CardController {
     @PostMapping("/recharge/user/{userId}")
     public ResponseEntity<?> rechargeCardByUserId(@PathVariable Integer userId, @RequestBody Map<String, Double> payload) {
         try {
+            //TODO REVISAR
             Double amount = payload.get("amount");
             Card updatedCard = cardService.rechargeCardByUserId(userId, amount);
             return ResponseEntity.ok(updatedCard);

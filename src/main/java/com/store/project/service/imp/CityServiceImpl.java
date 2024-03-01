@@ -12,12 +12,8 @@ import java.util.Optional;
 @Service
 public class CityServiceImpl implements CityService {
 
-    private final CityRepository cityRepository;
-
     @Autowired
-    public CityServiceImpl(CityRepository cityRepository) {
-        this.cityRepository = cityRepository;
-    }
+    private CityRepository cityRepository;
 
     @Override
     public City saveCity(City city) {

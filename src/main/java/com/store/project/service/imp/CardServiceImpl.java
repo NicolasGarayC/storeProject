@@ -13,12 +13,9 @@ import java.util.Optional;
 @Service
 public class CardServiceImpl implements CardService {
 
-    private final CardRepository cardRepository;
-
     @Autowired
-    public CardServiceImpl(CardRepository cardRepository) {
-        this.cardRepository = cardRepository;
-    }
+    private CardRepository cardRepository;
+
 
     @Override
     public Optional<Card> getCardById(Integer id) {

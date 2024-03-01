@@ -14,12 +14,9 @@ import java.util.Optional;
 @RequestMapping("/roles")
 public class RoleController {
 
-    private final RoleService roleService;
 
     @Autowired
-    public RoleController(RoleService roleService) {
-        this.roleService = roleService;
-    }
+    private RoleService roleService;
 
     @PostMapping
     public ResponseEntity<Role> createRole(@RequestBody Role role) {

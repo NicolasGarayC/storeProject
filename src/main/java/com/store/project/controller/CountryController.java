@@ -14,12 +14,8 @@ import java.util.Optional;
 @RequestMapping("/countries")
 public class CountryController {
 
-    private final CountryService countryService;
-
     @Autowired
-    public CountryController(CountryService countryService) {
-        this.countryService = countryService;
-    }
+    private CountryService countryService;
 
     @PostMapping
     public ResponseEntity<Country> createCountry(@RequestBody Country country) {

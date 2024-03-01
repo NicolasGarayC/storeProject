@@ -1,38 +1,57 @@
 package com.store.project.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "Users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, length = 50)
+    @NotNull(message = "ID can't be null.")
+    @Min(value = 10000, message = "Please use a valid ID.")
     private Integer id;
 
     @Column(nullable = false, length = 50)
+    @NotNull(message = "Your name is required.")
+    @NotBlank(message = "Your name is required.")
     private String name;
 
     @Column(nullable = false, length = 20)
+    @NotNull(message = "Your password is required.")
+    @NotBlank(message = "Your password is required.")
     private String password;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role", nullable = false)
+    @NotNull(message = "Role is required.")
     private Role role;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @NotNull(message = "Your country is required.")
     @JoinColumn(name = "country", nullable = false)
     private Country country;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @NotNull(message = "Your city is required.")
     @JoinColumn(name = "city", nullable = false)
     private City city;
 
     @Column(nullable = false, length = 1)
+    @NotNull(message = "Your gender is required.")
+    @NotBlank(message = "Your gender is required.")
     private String gender;
 
     @Column(length = 50)
+    @NotNull(message = "Your profession is required.")
+    @NotBlank(message = "Your profession is required.")
     private String profession;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    private Card card;
 
     public User(Integer id, String name, String password, Role role, Country country, City city, String gender, String profession) {
         this.id = id;
@@ -110,5 +129,13 @@ public class User {
 
     public void setProfession(String profession) {
         this.profession = profession;
+    }
+
+    public Card getCard() {
+        return card;
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
     }
 }

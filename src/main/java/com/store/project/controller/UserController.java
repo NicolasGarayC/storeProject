@@ -1,5 +1,6 @@
 package com.store.project.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +22,15 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User savedUser = userService.saveUser(user);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    @PostMapping("/createUser")
+    public ResponseEntity<String> createUser(@Valid @RequestBody User user) {
+        try {
+            userService.saveUser(user);
+            return new ResponseEntity<>("Successfully Registered User.", HttpStatus.CREATED);
+        } catch (Exception ex){
+            System.out.println("error: "+ ex.getMessage());
+            return new ResponseEntity<>("Internal error. ", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/{id}")

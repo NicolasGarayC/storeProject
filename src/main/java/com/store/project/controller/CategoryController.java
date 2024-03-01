@@ -14,12 +14,9 @@ import java.util.Optional;
 @RequestMapping("/categories")
 public class CategoryController {
 
-    private final CategoryService categoryService;
-
     @Autowired
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
+    private CategoryService categoryService;
+
 
     @PostMapping
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {

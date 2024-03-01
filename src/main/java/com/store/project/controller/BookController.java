@@ -16,12 +16,8 @@ import org.springframework.data.web.PageableDefault;
 @RequestMapping("/books")
 public class BookController {
 
-    private final BookService bookService;
-
     @Autowired
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
-    }
+    private BookService bookService;
 
     @PostMapping
     public ResponseEntity<Book> createBook(@RequestBody Book book) {
@@ -61,6 +57,7 @@ public class BookController {
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String isbn,
             @PageableDefault(sort = "id") Pageable pageable) {
+        //TODO REVISAR FILTROS LIKE
         Page<Book> books = bookService.findBooks(id, title, isbn, pageable);
         return new ResponseEntity<>(books, HttpStatus.OK);
     }

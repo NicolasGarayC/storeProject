@@ -7,15 +7,14 @@ import jakarta.persistence.*;
 public class Card {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "card_number",nullable = false, length = 50)
     private Integer cardNumber;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Associed_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(nullable = false, length = 50)
-
     private Double balance;
 
 
