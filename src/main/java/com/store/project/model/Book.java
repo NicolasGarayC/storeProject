@@ -1,5 +1,6 @@
 package com.store.project.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -26,8 +27,9 @@ public class Book {
     @Column(name = "image", nullable = false)
     private String image;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    @JoinColumn(name = "category", referencedColumnName = "id")
     private Category category;
 
     public Book() {

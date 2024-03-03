@@ -1,4 +1,5 @@
 package com.store.project.model;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.Set;
 
@@ -11,13 +12,15 @@ public class Category {
     @Column(name="id")
     private Integer id;
 
+
     @Column(nullable = false, length = 50)
     private String category;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Book books;
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<Book> books;
 
-    public Category(Integer id, String category, Book books) {
+    public Category(Integer id, String category, Set<Book> books) {
         this.id = id;
         this.category = category;
         this.books = books;
@@ -42,11 +45,11 @@ public class Category {
         this.category = category;
     }
 
-    public Book getBooks() {
+    public Set<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(Book books) {
+    public void setBooks(Set<Book> books) {
         this.books = books;
     }
 }
