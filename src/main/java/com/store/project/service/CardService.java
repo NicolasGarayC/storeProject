@@ -13,7 +13,7 @@ public interface CardService {
 
     Card updateCard(Card card);
 
-    Card rechargeCardByUserId(Integer userId, Double amount) throws Exception;
+    String rechargeCardByUserId(Integer userId, Double amount) throws Exception;
     Card saveCard(Card cart);
 
 }

@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface BookService {
 
-    Book saveBook(Book book);
+    String saveBook(Book book);
 
     Optional<Book> getBookById(Integer id);
 
@@ -19,4 +19,5 @@ public interface BookService {
     void deleteBookById(Integer id);
 
     Page<Book> findBooks(Integer id, String title, String isbn, Pageable pageable);
+
 }

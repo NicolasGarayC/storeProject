@@ -14,7 +14,7 @@ public class Card {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false, length = 50)
+    @Column(name = "balance", nullable = false, length = 50)
     private Double balance;
 
 
@@ -49,6 +49,6 @@ public class Card {
     }
 
     public void setBalance(Double balance) {
-        balance = balance;
+        this.balance = balance;
     }
 }

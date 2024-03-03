@@ -1,5 +1,6 @@
 package com.store.project.controller;
 
+import com.store.project.model.dto.CardDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,20 +32,14 @@ public class CardController {
         return new ResponseEntity<>(cards, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Card> updateCard(@PathVariable Integer id, @RequestBody Card cardDetails) {
-        cardDetails.setCardNumber(id); // Asegúrate de que esto corresponde a cómo manejas el identificador en Card.
-        Card updatedCard = cardService.updateCard(cardDetails);
-        return new ResponseEntity<>(updatedCard, HttpStatus.OK);
-    }
 
-    @PostMapping("/recharge/user/{userId}")
-    public ResponseEntity<?> rechargeCardByUserId(@PathVariable Integer userId, @RequestBody Map<String, Double> payload) {
+    @PostMapping("/recharge")
+    public ResponseEntity<String> rechargeCardByUserId( @RequestBody CardDTO card) {
         try {
-            //TODO REVISAR
-            Double amount = payload.get("amount");
-            Card updatedCard = cardService.rechargeCardByUserId(userId, amount);
-            return ResponseEntity.ok(updatedCard);
+            Double amount = card.getAmount();
+            Integer userId = card.getUserId();
+            String status = cardService.rechargeCardByUserId(userId, amount);
+            return ResponseEntity.ok().body(status);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

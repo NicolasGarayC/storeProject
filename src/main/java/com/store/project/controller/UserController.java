@@ -28,8 +28,7 @@ public class UserController {
             userService.saveUser(user);
             return new ResponseEntity<>("Successfully Registered User.", HttpStatus.CREATED);
         } catch (Exception ex){
-            System.out.println("error: "+ ex.getMessage());
-            return new ResponseEntity<>("Internal error. ", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

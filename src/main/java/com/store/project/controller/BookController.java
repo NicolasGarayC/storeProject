@@ -19,10 +19,15 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-    @PostMapping
-    public ResponseEntity<Book> createBook(@RequestBody Book book) {
-        Book savedBook = bookService.saveBook(book);
-        return new ResponseEntity<>(savedBook, HttpStatus.CREATED);
+    @PostMapping("/insertBook")
+    public ResponseEntity<String> createBook(@RequestBody Book book) {
+        try{
+            bookService.saveBook(book);
+            return new ResponseEntity<>("Book Created",HttpStatus.CREATED);
+        }catch (Exception e){
+            System.out.println("Error"+ e.getMessage());
+            return new ResponseEntity<>("Internal Error.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{id}")

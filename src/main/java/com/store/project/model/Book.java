@@ -8,6 +8,7 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Integer id;
 
     @Column(nullable = false, length = 50)
@@ -20,7 +21,7 @@ public class Book {
     private Float price;
 
     @Column(name = "units_Available", length = 50)
-    private String unitsAvailable;
+    private Integer unitsAvailable;
 
     @Column(name = "image", nullable = false)
     private String image;
@@ -29,14 +30,10 @@ public class Book {
     @JoinColumn(name = "category", nullable = false)
     private Category category;
 
-
-
     public Book() {
     }
 
-
-    public Book(Integer id, String isbn, String title, Float price, String unitsAvailable, String image, Category category) {
-        this.id = id;
+    public Book(Integer id, String isbn, String title, Float price, Integer unitsAvailable, String image, Category category) {
         this.isbn = isbn;
         this.title = title;
         this.price = price;
@@ -77,11 +74,11 @@ public class Book {
         this.price = price;
     }
 
-    public String getUnitsAvailable() {
+    public Integer getUnitsAvailable() {
         return unitsAvailable;
     }
 
-    public void setUnitsAvailable(String unitsAvailable) {
+    public void setUnitsAvailable(Integer unitsAvailable) {
         this.unitsAvailable = unitsAvailable;
     }
 

@@ -8,13 +8,13 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Integer id;
 
     @Column(nullable = false, length = 50)
     private String category;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "book_id") // Este es el nombre de la columna de llave foránea en la tabla de Category
     private Book books;
 
     public Category(Integer id, String category, Book books) {

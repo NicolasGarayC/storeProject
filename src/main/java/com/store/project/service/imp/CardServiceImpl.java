@@ -1,6 +1,8 @@
 package com.store.project.service.imp;
 
 
+import com.store.project.model.User;
+import com.store.project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.store.project.model.Card;
@@ -16,6 +18,8 @@ public class CardServiceImpl implements CardService {
     @Autowired
     private CardRepository cardRepository;
 
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public Optional<Card> getCardById(Integer id) {
@@ -39,19 +43,28 @@ public class CardServiceImpl implements CardService {
 
 
     @Override
-    public Card rechargeCardByUserId(Integer userId, Double amount) throws Exception {
+    public String rechargeCardByUserId(Integer userId, Double amount) throws Exception {
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isEmpty()){
+            throw new Exception("User not found for ID: " + userId);
+        }
         Card card = cardRepository.findByUserId(userId);
         if (card == null) {
             throw new Exception("Card not found for user ID: " + userId);
         }
 
-        // Validar el monto de recarga
         if (amount < 50000 || amount > 200000) {
             throw new IllegalArgumentException("Amount must be between 50,000 and 200,000.");
         }
 
-        // Actualizar el balance de la tarjeta
-        card.setBalance(card.getBalance() + amount);
-        return cardRepository.save(card);
+        Double tempb = card.getBalance() + amount;
+        System.out.println(tempb+ " " + amount);
+        card.setBalance(tempb);
+        try{
+            cardRepository.save(card);
+        } catch(Exception e) {
+            throw new RuntimeException("ERROR "+e.getMessage());
+        }
+        return "Card Recharged";
     }
 }
