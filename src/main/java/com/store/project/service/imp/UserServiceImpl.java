@@ -64,9 +64,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
+    public String updateUser(User user) {
         if (user.getId() != null && userRepository.existsById(user.getId())) {
-            return userRepository.save(user);
+            userRepository.save(user);
+            return "User Updated";
         } else {
             throw new IllegalArgumentException("User ID not found.");
         }

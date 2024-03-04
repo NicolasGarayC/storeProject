@@ -16,7 +16,6 @@ public class Role {
     @Column(nullable = false, length = 50)
     private String role;
 
-    @JsonBackReference
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<User> users;
 

@@ -29,7 +29,6 @@ public class User {
     @NotNull(message = "Role is required.")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role", nullable = false)
-    @JsonManagedReference
     private Role role;
 
     @ManyToOne(fetch = FetchType.LAZY)
