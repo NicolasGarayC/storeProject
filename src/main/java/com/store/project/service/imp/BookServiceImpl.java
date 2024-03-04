@@ -56,19 +56,17 @@ public class BookServiceImpl implements BookService {
         Specification<Book> spec = (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (id != null) {
-                System.out.println("id");
                 predicates.add(criteriaBuilder.equal(root.get("id"), id));
             }
             if (title != null && !title.isEmpty()) {
-                System.out.println("tittle");
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), "%" + title.toLowerCase() + "%"));
             }
             if (isbn != null && !isbn.isEmpty()) {
-                System.out.println("isbn");
                 predicates.add(criteriaBuilder.equal(root.get("isbn"), isbn));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
         return bookRepository.findAll(spec, pageable);
     }
+
 }

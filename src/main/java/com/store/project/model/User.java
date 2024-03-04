@@ -1,5 +1,6 @@
 package com.store.project.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -25,17 +26,18 @@ public class User {
     @NotBlank(message = "Your password is required.")
     private String password;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role", nullable = false)
     @NotNull(message = "Role is required.")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role", nullable = false)
+    @JsonManagedReference
     private Role role;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull(message = "Your country is required.")
     @JoinColumn(name = "country", nullable = false)
     private Country country;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull(message = "Your city is required.")
     @JoinColumn(name = "city", nullable = false)
     private City city;

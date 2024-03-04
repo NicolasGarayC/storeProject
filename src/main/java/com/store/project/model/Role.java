@@ -1,5 +1,7 @@
 package com.store.project.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Set;
 
@@ -14,10 +16,11 @@ public class Role {
     @Column(nullable = false, length = 50)
     private String role;
 
-    @OneToOne(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private User users;
+    @JsonBackReference
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<User> users;
 
-    public Role(Integer id, String role, User users) {
+    public Role(Integer id, String role, Set<User> users) {
         this.id = id;
         this.role = role;
         this.users = users;
@@ -42,11 +45,11 @@ public class Role {
         this.role = role;
     }
 
-    public User getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(User users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 }

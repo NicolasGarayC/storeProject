@@ -1,4 +1,5 @@
 package com.store.project.controller;
+import com.store.project.model.dto.BookFiltersDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,14 +57,10 @@ public class BookController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<Page<Book>> findBooks(
-            @RequestParam(required = false) Integer id,
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String isbn,
-            @PageableDefault(sort = "id") Pageable pageable) {
-        //TODO REVISAR FILTROS LIKE
-        Page<Book> books = bookService.findBooks(id, title, isbn, pageable);
-        return new ResponseEntity<>(books, HttpStatus.OK);
+    @PostMapping("/search")
+    public ResponseEntity<Page<Book>> findBooks(@RequestBody BookFiltersDTO criteria, Pageable pageable) {
+        Page<Book> books = bookService.findBooks(criteria.getId(), criteria.getTitle(), criteria.getIsbn(), pageable);
+        return ResponseEntity.ok(books);
     }
+
 }

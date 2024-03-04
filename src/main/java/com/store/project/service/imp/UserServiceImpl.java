@@ -65,7 +65,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user) {
-        //TODO Actualizar users por parametro
         if (user.getId() != null && userRepository.existsById(user.getId())) {
             return userRepository.save(user);
         } else {
