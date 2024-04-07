@@ -12,8 +12,10 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
+@CrossOrigin // Permite todas las solicitudes CORS
 @RequestMapping("/books")
 public class BookController {
 
@@ -38,8 +40,9 @@ public class BookController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping
+    @GetMapping("getAll")
     public ResponseEntity<List<Book>> getAllBooks() {
+        System.out.println("llegué");
         List<Book> books = bookService.getAllBooks();
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
