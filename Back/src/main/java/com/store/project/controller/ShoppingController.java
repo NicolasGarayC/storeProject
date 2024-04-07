@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping("/shop")
 public class ShoppingController {
 
@@ -21,7 +23,7 @@ public class ShoppingController {
     @PostMapping("/purchasebooks")
         public ResponseEntity<String> purchaseBooks(@RequestBody PurchaseDTO purchase) {
         try{
-            return new ResponseEntity<>(purchaseService.buyBooks(purchase), HttpStatus.CREATED);
+            return new ResponseEntity<>(purchaseService.buyBooks(purchase), HttpStatus.OK);
         }catch (Exception e){
             System.out.println("Error"+ e.getMessage());
             return new ResponseEntity<>("Error: "+ e.getMessage(), HttpStatus.BAD_REQUEST);

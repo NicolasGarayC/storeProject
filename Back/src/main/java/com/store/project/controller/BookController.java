@@ -11,11 +11,10 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
-@CrossOrigin // Permite todas las solicitudes CORS
+@CrossOrigin
 @RequestMapping("/books")
 public class BookController {
 
@@ -42,7 +41,6 @@ public class BookController {
 
     @GetMapping("getAll")
     public ResponseEntity<List<Book>> getAllBooks() {
-        System.out.println("llegué");
         List<Book> books = bookService.getAllBooks();
         return new ResponseEntity<>(books, HttpStatus.OK);
     }

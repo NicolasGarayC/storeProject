@@ -6,7 +6,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<BookList />} />
-        {/* Configurar otras rutas */}
+        {}
       </Routes>
     </Router>
   );

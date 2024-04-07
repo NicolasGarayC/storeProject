@@ -3,6 +3,8 @@ package com.store.project.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.sql.Date;
+
 @Entity
 @Table(name = "Books")
 public class Book {
@@ -32,16 +34,25 @@ public class Book {
     @JoinColumn(name = "category", referencedColumnName = "id")
     private Category category;
 
+    @Column(name = "publication_date",nullable = true)
+    private Date publication_date;
+
+    @Column(name = "author", nullable = true)
+    private String author;
+
     public Book() {
     }
 
-    public Book(Integer id, String isbn, String title, Float price, Integer unitsAvailable, String image, Category category) {
+    public Book(Integer id, String isbn, String title, Float price, Integer unitsAvailable, String image, Category category, Date publication_date, String author) {
+        this.id = id;
         this.isbn = isbn;
         this.title = title;
         this.price = price;
         this.unitsAvailable = unitsAvailable;
         this.image = image;
         this.category = category;
+        this.publication_date = publication_date;
+        this.author = author;
     }
 
     public Integer getId() {
@@ -98,5 +109,21 @@ public class Book {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Date getPublication_date() {
+        return publication_date;
+    }
+
+    public void setPublication_date(Date publication_date) {
+        this.publication_date = publication_date;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }
