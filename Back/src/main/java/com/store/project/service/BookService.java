@@ -1,5 +1,6 @@
 package com.store.project.service;
 import com.store.project.model.Book;
+import com.store.project.model.dto.BookFiltersDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,6 +19,6 @@ public interface BookService {
 
     void deleteBookById(Integer id);
 
-    Page<Book> findBooks(Integer id, String title, String isbn, Pageable pageable);
+    Page<Book> findBooks(BookFiltersDTO criteria, Pageable pageable);
 
 }

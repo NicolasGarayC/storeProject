@@ -22,10 +22,9 @@
     border: 1px solid #ddd;
   }  
   .book-item {
-    margin: 10px;
-    padding: 10px;
     border: 1px solid rgb(221, 221, 221);
     padding: 10px;
+    padding-bottom: 40px;
     margin: 10px;
     max-height: 470px;
     min-height: 470px;

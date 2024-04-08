@@ -1,5 +1,6 @@
 package com.store.project.service.imp;
 
+import com.store.project.model.dto.BookFiltersDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.store.project.model.Book;
@@ -52,21 +53,36 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Page<Book> findBooks(Integer id, String title, String isbn, Pageable pageable) {
+    public Page<Book> findBooks(BookFiltersDTO criteria, Pageable pageable) {
         Specification<Book> spec = (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
-            if (id != null) {
-                predicates.add(criteriaBuilder.equal(root.get("id"), id));
+
+            if (criteria.getId() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("id"), criteria.getId()));
             }
-            if (title != null && !title.isEmpty()) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), "%" + title.toLowerCase() + "%"));
+            if (criteria.getTitle() != null && !criteria.getTitle().isEmpty()) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), "%" + criteria.getTitle().toLowerCase() + "%"));
             }
-            if (isbn != null && !isbn.isEmpty()) {
-                predicates.add(criteriaBuilder.equal(root.get("isbn"), isbn));
+            if (criteria.getIsbn() != null && !criteria.getIsbn().isEmpty()) {
+                predicates.add(criteriaBuilder.equal(root.get("isbn"), criteria.getIsbn()));
             }
+            if (criteria.getMinPrice() != null && criteria.getMaxPrice() != null) {
+                predicates.add(criteriaBuilder.between(root.get("price"), criteria.getMinPrice(), criteria.getMaxPrice()));
+            }
+            if (criteria.getAuthor() != null && !criteria.getAuthor().isEmpty()) {
+                predicates.add(criteriaBuilder.equal(root.get("author"), criteria.getAuthor()));
+            }
+            if (criteria.getPublicationDateStart() != null && criteria.getPublicationDateEnd() != null) {
+                predicates.add(criteriaBuilder.between(root.get("publication_date"), criteria.getPublicationDateStart(), criteria.getPublicationDateEnd()));
+            }
+            if (criteria.getCategory() != null && !criteria.getCategory().isEmpty()) {
+                predicates.add(criteriaBuilder.equal(root.get("category").get("name"), criteria.getCategory()));
+            }
+
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
         return bookRepository.findAll(spec, pageable);
     }
+
 
 }

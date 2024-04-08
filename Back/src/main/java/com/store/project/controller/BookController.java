@@ -60,7 +60,8 @@ public class BookController {
 
     @PostMapping("/search")
     public ResponseEntity<Page<Book>> findBooks(@RequestBody BookFiltersDTO criteria, Pageable pageable) {
-        Page<Book> books = bookService.findBooks(criteria.getId(), criteria.getTitle(), criteria.getIsbn(), pageable);
+        Page<Book> books = bookService.findBooks(criteria, pageable);
+
         return ResponseEntity.ok(books);
     }
 

@@ -33,7 +33,6 @@ public class Book {
     @JsonBackReference
     @JoinColumn(name = "category", referencedColumnName = "id")
     private Category category;
-
     @Column(name = "publication_date",nullable = true)
     private Date publication_date;
 

@@ -16,7 +16,7 @@ public class Category {
     @Column(nullable = false, length = 50)
     private String category;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category")
     @JsonManagedReference
     private Set<Book> books;
 

@@ -11,21 +11,31 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import Snackbar from '@mui/material/Snackbar';
 import CartModal from '../dialogs/CartModal';
 import ConfirmDialog from '../dialogs/ConfirmDialog';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css'; // Importa el CSS
+
 
 function BookList() {
   const [books, setBooks] = useState([]);
-  const [searchCriteria, setSearchCriteria] = useState({ id: '', title: '', isbn: '', });
+  const [searchCriteria, setSearchCriteria] = useState({
+    id: null,
+    isbn: null,
+    title: '',
+    minPrice: 0,
+    maxPrice: Infinity,
+    author: '',
+    publicationDateStart: '',
+    publicationDateEnd: '',
+  });
   const [cart, setCart] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [filters, setFilters] = useState({
-    genre: '',
-    priceRange: { min: 0, max: Infinity },
-    author: '',
-    publicationDate: { start: '', end: '' },
-  });
+
+  const handleDateChange = (field, date) => {
+    setSearchCriteria({ ...searchCriteria, [field]: date });
+  };
 
   useEffect(() => {
     fetchBooks();
@@ -48,6 +58,12 @@ function BookList() {
   const handleSearch = (e) => {
     e.preventDefault();
 
+    // Formatear las fechas de inicio y fin para la petición
+    const formattedStartDate = searchCriteria.publicationDateStart ?
+      new Date(searchCriteria.publicationDateStart).toISOString().split('T')[0] : null;
+    const formattedEndDate = searchCriteria.publicationDateEnd ?
+      new Date(searchCriteria.publicationDateEnd).toISOString().split('T')[0] : null;
+
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -55,61 +71,22 @@ function BookList() {
         id: searchCriteria.id ? parseInt(searchCriteria.id, 10) : null,
         title: searchCriteria.title,
         isbn: searchCriteria.isbn,
+        // Incluir las fechas formateadas y los otros criterios nuevos
+        minPrice: searchCriteria.minPrice,
+        maxPrice: searchCriteria.maxPrice,
+        author: searchCriteria.author,
+        publicationDateStart: formattedStartDate,
+        publicationDateEnd: formattedEndDate,
       }),
     };
 
     fetch('http://localhost:3200/books/search', requestOptions)
       .then(response => response.json())
       .then(data => {
-        setBooks(data.content);
+        setBooks(data.content); // Asegúrate de que el backend responda con una propiedad 'content' adecuada
       })
       .catch(error => console.error('There was an error!', error));
   };
-  const handleGeneroChange = (e) => {
-    setFilters({ ...filters, category: e.target.value });
-  };
-
-  const handlePriceRangeChange = (range) => {
-    setFilters({ ...filters, priceRange: range });
-  };
-
-  const handleAuthorChange = (e) => {
-    setFilters({ ...filters, author: e.target.value });
-  };
-
-  const handlePublicationDateChange = (dateRange) => {
-    setFilters({ ...filters, publicationDate: dateRange });
-  };
-
-  const PriceRangeSelector = () => (
-    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-      <TextField
-        label="Precio Mínimo"
-        type="number"
-        value={filters.priceRange.min}
-        onChange={(e) => handlePriceRangeChange({ ...filters.priceRange, min: e.target.value })}
-        size="small"
-      />
-      <TextField
-        label="Precio Máximo"
-        type="number"
-        value={filters.priceRange.max}
-        onChange={(e) => handlePriceRangeChange({ ...filters.priceRange, max: e.target.value })}
-        size="small"
-      />
-    </div>
-  );
-
-  const filteredBooks = books.filter(book => {
-    return (
-      (filters.genre === '' || book.genre === filters.genre) &&
-      book.price >= filters.priceRange.min &&
-      book.price <= filters.priceRange.max &&
-      (filters.author === '' || book.author.includes(filters.author)) &&
-      (filters.publicationDate.start === '' || new Date(book.publication_date) >= new Date(filters.publicationDate.start)) &&
-      (filters.publicationDate.end === '' || new Date(book.publication_date) <= new Date(filters.publicationDate.end))
-    );
-  });
 
   const addToCart = (book, quantity) => {
     setCart(current => {
@@ -166,25 +143,9 @@ function BookList() {
   const removeFromCart = (bookId) => {
     setCart(currentCart => currentCart.filter(item => item.book.id !== bookId));
   };
-//TODO ARREGLAR DEPENDENCIAS
+  //TODO ARREGLAR DEPENDENCIAS
   return (
     <div className="book-list">
-      <div style={{ margin: '20px', display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-        <TextField
-          label="Género"
-          variant="outlined"
-          size="small"
-          value={filters.genero}
-          onChange={handleGeneroChange}
-        />
-        <TextField
-          label="Autor"
-          variant="outlined"
-          size="small"
-          value={filters.author}
-          onChange={handleAuthorChange}
-        />
-      </div>
       <Tooltip title="Ver Carrito">
         <IconButton onClick={() => setIsModalOpen(true)} style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 1000 }}>
           <ShoppingCartIcon />
@@ -207,14 +168,45 @@ function BookList() {
         title="Confirmar Compra"
         message="¿Estás seguro de que deseas realizar la compra?"
       />
+      <div className='form-div'>
+        <form onSubmit={handleSearch} style={{ margin: '20px' }}>
+          {/* Campos existentes para título e ISBN */}
+          <TextField label="Título" variant="outlined" size="small" style={{ marginRight: '10px' }}
+            value={searchCriteria.title}
+            onChange={(e) => setSearchCriteria({ ...searchCriteria, title: e.target.value })} />
+          <TextField label="ISBN" variant="outlined" size="small" value={searchCriteria.isbn}
+            onChange={(e) => setSearchCriteria({ ...searchCriteria, isbn: e.target.value })} />
 
-      <form onSubmit={handleSearch} style={{ margin: '20px' }}>
-        <TextField label="Title" variant="outlined" size="small" style={{ marginRight: '10px' }} value={searchCriteria.title} onChange={(e) => setSearchCriteria({ ...searchCriteria, title: e.target.value })} />
-        <TextField label="ISBN" variant="outlined" size="small" value={searchCriteria.isbn} onChange={(e) => setSearchCriteria({ ...searchCriteria, isbn: e.target.value })} />
-        <Button type="submit" variant="contained" color="primary" style={{ marginLeft: '10px' }}>Buscar</Button>
-      </form>
+          {/* Campos adicionales para rango de precios, autor, fecha de publicación y categoría */}
+          <TextField label="Precio Mínimo" type="number" variant="outlined" size="small" style={{ marginRight: '10px' }}
+            value={searchCriteria.minPrice}
+            onChange={(e) => setSearchCriteria({ ...searchCriteria, minPrice: e.target.value })} />
+          <TextField label="Precio Máximo" type="number" variant="outlined" size="small" style={{ marginRight: '10px' }}
+            value={searchCriteria.maxPrice}
+            onChange={(e) => setSearchCriteria({ ...searchCriteria, maxPrice: e.target.value })} />
+          <TextField label="Autor" variant="outlined" size="small" style={{ marginRight: '10px' }}
+            value={searchCriteria.author}
+            onChange={(e) => setSearchCriteria({ ...searchCriteria, author: e.target.value })} />
+          {/* Asegúrate de implementar DatePicker para las fechas */}
+          <div>
+            <p>Fecha de Publicación Desde:</p>
+            <DatePicker
+              selected={searchCriteria.publicationDateStart}
+              onChange={(date) => handleDateChange('publicationDateStart', date)}
+            />
+          </div>
+          <div>
+            <p>Fecha de Publicación Hasta:</p>
+            <DatePicker
+              selected={searchCriteria.publicationDateEnd}
+              onChange={(date) => handleDateChange('publicationDateEnd', date)}
+            />
+          </div>
+          <Button type="submit" variant="contained" color="primary">Buscar</Button>
+        </form>
+      </div>
       <div className="book-container">
-        {filteredBooks.map((book) => (
+        {books.map((book) => (
           <div key={book.id} className="book-item">
             <Book {...book} />
             <TextField type="number" InputProps={{ inputProps: { min: 1, max: book.unitsAvailable, defaultValue: 1 } }} size="small" id={`quantity-${book.id}`} variant="outlined" />
