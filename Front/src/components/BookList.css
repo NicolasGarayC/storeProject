@@ -1,41 +1,92 @@
-/* src/components/BookList.css */
 .book-list {
-    display: flex;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.book-single {
+  min-width: 211px;
+  min-height: 398px;
+  max-width: 100%;
+  max-height: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ddd;
+}
+
+.book-item {
+  border: 1px solid rgb(221, 221, 221);
+  padding: 10px;
+  padding-bottom: 40px;
+  margin: 10px;
+  max-height: 470px;
+  min-height: 470px;
+  min-width: 250px;
+  max-width: 250px;
+}
+
+.book-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.date-picker-container {
+  Display: flex;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f7f7f7;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+}
+
+.date-picker {
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  width: 250px;
+}
+
+.date-picker p {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.custom-date-picker {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s;
+}
+
+.custom-date-picker:focus {
+  border-color: #007bff;
+}
+
+@media (max-width: 600px) {
+  .date-picker-container {
     flex-direction: column;
-    align-content: center;
-    flex-wrap: wrap;
-    justify-content: center;
     align-items: center;
   }
-  .book-single{
-    min-width: 211px;
-    min-height: 398px;
-    max-width: 100%;
-    max-height: 100%;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #ddd;
-  }  
-  .book-item {
-    border: 1px solid rgb(221, 221, 221);
-    padding: 10px;
-    padding-bottom: 40px;
-    margin: 10px;
-    max-height: 470px;
-    min-height: 470px;
-    min-width: 250px;
-    max-width: 250px;
+
+  .date-picker {
+    margin-bottom: 20px;
+    width: auto;
   }
-  .book-container{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
-  }
+}

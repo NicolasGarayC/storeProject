@@ -12,7 +12,7 @@ import Snackbar from '@mui/material/Snackbar';
 import CartModal from '../dialogs/CartModal';
 import ConfirmDialog from '../dialogs/ConfirmDialog';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css'; // Importa el CSS
+import 'react-datepicker/dist/react-datepicker.css';
 
 
 function BookList() {
@@ -83,7 +83,7 @@ function BookList() {
     fetch('http://localhost:3200/books/search', requestOptions)
       .then(response => response.json())
       .then(data => {
-        setBooks(data.content); // Asegúrate de que el backend responda con una propiedad 'content' adecuada
+        setBooks(data.content);
       })
       .catch(error => console.error('There was an error!', error));
   };
@@ -143,7 +143,7 @@ function BookList() {
   const removeFromCart = (bookId) => {
     setCart(currentCart => currentCart.filter(item => item.book.id !== bookId));
   };
-  //TODO ARREGLAR DEPENDENCIAS
+
   return (
     <div className="book-list">
       <Tooltip title="Ver Carrito">
@@ -170,37 +170,52 @@ function BookList() {
       />
       <div className='form-div'>
         <form onSubmit={handleSearch} style={{ margin: '20px' }}>
-          {/* Campos existentes para título e ISBN */}
-          <TextField label="Título" variant="outlined" size="small" style={{ marginRight: '10px' }}
-            value={searchCriteria.title}
-            onChange={(e) => setSearchCriteria({ ...searchCriteria, title: e.target.value })} />
-          <TextField label="ISBN" variant="outlined" size="small" value={searchCriteria.isbn}
-            onChange={(e) => setSearchCriteria({ ...searchCriteria, isbn: e.target.value })} />
+          <div className="date-picker-container">
 
-          {/* Campos adicionales para rango de precios, autor, fecha de publicación y categoría */}
-          <TextField label="Precio Mínimo" type="number" variant="outlined" size="small" style={{ marginRight: '10px' }}
-            value={searchCriteria.minPrice}
-            onChange={(e) => setSearchCriteria({ ...searchCriteria, minPrice: e.target.value })} />
-          <TextField label="Precio Máximo" type="number" variant="outlined" size="small" style={{ marginRight: '10px' }}
-            value={searchCriteria.maxPrice}
-            onChange={(e) => setSearchCriteria({ ...searchCriteria, maxPrice: e.target.value })} />
-          <TextField label="Autor" variant="outlined" size="small" style={{ marginRight: '10px' }}
-            value={searchCriteria.author}
-            onChange={(e) => setSearchCriteria({ ...searchCriteria, author: e.target.value })} />
-          {/* Asegúrate de implementar DatePicker para las fechas */}
-          <div>
-            <p>Fecha de Publicación Desde:</p>
-            <DatePicker
-              selected={searchCriteria.publicationDateStart}
-              onChange={(date) => handleDateChange('publicationDateStart', date)}
-            />
-          </div>
-          <div>
-            <p>Fecha de Publicación Hasta:</p>
-            <DatePicker
-              selected={searchCriteria.publicationDateEnd}
-              onChange={(date) => handleDateChange('publicationDateEnd', date)}
-            />
+            <div className="date-picker">
+              <TextField label="Título" variant="outlined" size="small" style={{ marginRight: '10px' }}
+                value={searchCriteria.title}
+                onChange={(e) => setSearchCriteria({ ...searchCriteria, title: e.target.value })} />
+            </div>
+            <div className="date-picker">
+              <TextField label="ISBN" variant="outlined" size="small" value={searchCriteria.isbn}
+                onChange={(e) => setSearchCriteria({ ...searchCriteria, isbn: e.target.value })} />
+
+            </div>
+            <div className="date-picker">
+              <TextField label="Precio Mínimo" type="number" variant="outlined" size="small" style={{ marginRight: '10px' }}
+                value={searchCriteria.minPrice}
+                onChange={(e) => setSearchCriteria({ ...searchCriteria, minPrice: e.target.value })} />
+
+            </div>
+            <div className="date-picker">
+              <TextField label="Precio Máximo" type="number" variant="outlined" size="small" style={{ marginRight: '10px' }}
+                value={searchCriteria.maxPrice}
+                onChange={(e) => setSearchCriteria({ ...searchCriteria, maxPrice: e.target.value })} />
+            </div>
+            <div className="date-picker">
+              <TextField label="Autor" variant="outlined" size="small" style={{ marginRight: '10px' }}
+                value={searchCriteria.author}
+                onChange={(e) => setSearchCriteria({ ...searchCriteria, author: e.target.value })} />
+            </div>
+
+
+            <div className="date-picker">
+              <p>Fecha de Publicación Desde:</p>
+              <DatePicker
+                className="custom-date-picker"
+                selected={searchCriteria.publicationDateStart}
+                onChange={(date) => handleDateChange('publicationDateStart', date)}
+              />
+            </div>
+            <div className="date-picker">
+              <p>Fecha de Publicación Hasta:</p>
+              <DatePicker
+                className="custom-date-picker"
+                selected={searchCriteria.publicationDateEnd}
+                onChange={(date) => handleDateChange('publicationDateEnd', date)}
+              />
+            </div>
           </div>
           <Button type="submit" variant="contained" color="primary">Buscar</Button>
         </form>

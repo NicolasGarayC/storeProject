@@ -14,6 +14,6 @@ function Book({ isbn, title, price, unitsAvailable, image, category }) {
     </div>
   );
 }
-      //TODO ARREGLAR CATEGORIA
+//TODO ARREGLAR CATEGORIA
 
 export default Book;
