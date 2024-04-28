@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.util.Map;
+
 
 @RestController
 @CrossOrigin
@@ -20,13 +22,15 @@ public class ShoppingController {
 
     @Autowired
     private PurchaseService purchaseService;
+
     @PostMapping("/purchasebooks")
-        public ResponseEntity<String> purchaseBooks(@RequestBody PurchaseDTO purchase) {
-        try{
-            return new ResponseEntity<>(purchaseService.buyBooks(purchase), HttpStatus.OK);
-        }catch (Exception e){
-            System.out.println("Error"+ e.getMessage());
-            return new ResponseEntity<>("Error: "+ e.getMessage(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> purchaseBooks(@RequestBody PurchaseDTO purchase) {
+        try {
+            String result = purchaseService.buyBooks(purchase);
+            return ResponseEntity.ok().body(Map.of("message", result));
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Error: " + e.getMessage()));
         }
     }
 }

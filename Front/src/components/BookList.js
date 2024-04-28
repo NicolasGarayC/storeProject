@@ -45,7 +45,6 @@ function BookList() {
     fetch('http://localhost:3200/books/getAll')
       .then(response => response.json())
       .then(data => {
-        console.log("data", data);
         setBooks(data);
       })
       .catch(error => console.error('There was an error!', error));
@@ -115,28 +114,34 @@ function BookList() {
         units: item.quantity
       }))
     };
+  
     fetch('http://localhost:3200/shop/purchasebooks', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(purchaseDetails),
     })
-      .then(response => {
-        if (response.status === 200) {
+    .then(response => {
+      if (response.status === 200) {
+        response.json().then(data => {
           setSnackbarMessage('Artículos comprados con éxito.');
           setIsSnackbarOpen(true);
           setCart([]);
           setIsModalOpen(false);
           fetchBooks();
-        } else {
-          throw new Error(response);
-        }
-      })
-      .catch(error => {
-        setSnackbarMessage(error.message);
-        setIsSnackbarOpen(true);
-      });
+        });
+      } else {
+        response.json().then(data => {
+          setSnackbarMessage(data.error);
+          setIsSnackbarOpen(true);
+        });
+      }
+    })
+    .catch(error => {
+      setSnackbarMessage(error.message);
+      setIsSnackbarOpen(true);
+    });
   };
-
+  
   const removeFromCart = (bookId) => {
     setCart(currentCart => currentCart.filter(item => item.book.id !== bookId));
   };
