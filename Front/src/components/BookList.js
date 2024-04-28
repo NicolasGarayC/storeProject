@@ -57,8 +57,6 @@ function BookList() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-
-    // Formatear las fechas de inicio y fin para la petición
     const formattedStartDate = searchCriteria.publicationDateStart ?
       new Date(searchCriteria.publicationDateStart).toISOString().split('T')[0] : null;
     const formattedEndDate = searchCriteria.publicationDateEnd ?
@@ -71,7 +69,6 @@ function BookList() {
         id: searchCriteria.id ? parseInt(searchCriteria.id, 10) : null,
         title: searchCriteria.title,
         isbn: searchCriteria.isbn,
-        // Incluir las fechas formateadas y los otros criterios nuevos
         minPrice: searchCriteria.minPrice,
         maxPrice: searchCriteria.maxPrice,
         author: searchCriteria.author,
@@ -131,7 +128,7 @@ function BookList() {
           setIsModalOpen(false);
           fetchBooks();
         } else {
-          throw new Error('Ocurrió un error al procesar la compra.');
+          throw new Error(response);
         }
       })
       .catch(error => {
