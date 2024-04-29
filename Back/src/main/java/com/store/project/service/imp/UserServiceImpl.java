@@ -1,23 +1,25 @@
 package com.store.project.service.imp;
 
 import com.store.project.model.Card;
+import com.store.project.model.dto.UserAuthDTO;
 import com.store.project.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.store.project.model.User;
 import com.store.project.repository.UserRepository;
 import com.store.project.service.UserService;
 import com.store.project.service.CardService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
 @Service
 public class UserServiceImpl implements UserService {
-
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private UserRepository userRepository;
     private final Random random = new Random();
@@ -96,5 +98,17 @@ public class UserServiceImpl implements UserService {
             return "Password must have at least one symbol.";
         }
         return "ok";
+    }
+
+    @Override
+    public void authUser(UserAuthDTO userDTO) {
+
+        Optional<User> user = userRepository.findById(userDTO.getUser());
+
+        if (user.isEmpty()) {
+            if(!(user.get().getPassword().equals(userDTO.getPass()))){
+                throw new IllegalArgumentException("User ID not found.");
+            };
+        }
     }
 }

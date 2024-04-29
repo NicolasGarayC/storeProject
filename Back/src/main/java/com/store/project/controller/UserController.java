@@ -1,5 +1,6 @@
 package com.store.project.controller;
 
+import com.store.project.model.dto.UserAuthDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/users")
 public class UserController {
 
@@ -56,5 +58,15 @@ public class UserController {
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable Integer id) {
         userService.deleteUserById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/auth")
+    public ResponseEntity<HttpStatus> auth(@RequestBody UserAuthDTO user){
+        try {
+            userService.authUser(user);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception ex){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 }

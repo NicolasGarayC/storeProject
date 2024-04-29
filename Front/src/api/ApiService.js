@@ -1,5 +1,4 @@
-// src/services/apiService.js
-const API_BASE_URL = '/api'; // Asegúrate de ajustar esto a la base de tu endpoint en Spring Boot
+const API_BASE_URL = 'http://localhost:3000/'; 
 
 /**
  * Función genérica para realizar solicitudes HTTP.
@@ -21,27 +20,24 @@ const makeRequest = async (endpoint, method, body = null) => {
     body: body ? JSON.stringify(body) : null,
   };
 
-  // Para los métodos GET y HEAD, no enviar un cuerpo.
   if (method === 'GET' || method === 'HEAD') {
     delete config.body;
   }
 
   try {
     const response = await fetch(url, config);
+    const data = await response.json(); // Intenta parsear la respuesta siempre
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(data.message || `HTTP error! status: ${response.status}`); // Usa un mensaje personalizado si está disponible
     }
-    // Para operaciones DELETE, la respuesta puede no tener contenido.
-    return response.status === 204 ? null : await response.json();
+    return data;
   } catch (error) {
     console.error("Error making request:", error);
-    throw error;
+    throw error; // Re-lanza el error con la información útil
   }
 };
 
-/**
- * Operaciones CRUD genéricas
- */
+
 const apiService = {
   get: (endpoint) => makeRequest(endpoint, 'GET'),
   post: (endpoint, body) => makeRequest(endpoint, 'POST', body),

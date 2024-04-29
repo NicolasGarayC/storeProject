@@ -30,8 +30,8 @@ function BookList() {
   const [cart, setCart] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const handleDateChange = (field, date) => {
     setSearchCriteria({ ...searchCriteria, [field]: date });
@@ -42,7 +42,7 @@ function BookList() {
   }, []);
 
   const fetchBooks = () => {
-    fetch('http://localhost:3200/books/getAll')
+    fetch('books/getAll')
       .then(response => response.json())
       .then(data => {
         setBooks(data);
@@ -76,7 +76,7 @@ function BookList() {
       }),
     };
 
-    fetch('http://localhost:3200/books/search', requestOptions)
+    fetch('books/search', requestOptions)
       .then(response => response.json())
       .then(data => {
         setBooks(data.content);
@@ -115,7 +115,7 @@ function BookList() {
       }))
     };
   
-    fetch('http://localhost:3200/shop/purchasebooks', {
+    fetch('shop/purchasebooks', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(purchaseDetails),

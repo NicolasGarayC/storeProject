@@ -1,6 +1,8 @@
 package com.store.project.service;
 
 import com.store.project.model.User;
+import com.store.project.model.dto.UserAuthDTO;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -19,4 +21,7 @@ public interface UserService {
     void deleteUserById(Integer id);
 
     String validarContrasena(String nuevaContrasenia);
+
+    void authUser(UserAuthDTO user);
+
 }
