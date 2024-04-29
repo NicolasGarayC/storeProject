@@ -47,12 +47,14 @@
   justify-content: center;
   padding: 20px;
   background-color: #f7f7f7;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   align-content: center;
   align-items: center;
 }
-
+.sub-container{
+  display: flex;
+}
 .date-picker {
   padding: 15px;
   border-radius: 8px;

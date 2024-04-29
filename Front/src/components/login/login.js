@@ -25,18 +25,10 @@ function Login() {
       body: JSON.stringify({ user: username, pass: password }),
     })
     .then(response => {
-      if (response.ok) { 
         navigate('/books');
-      } else {
-        response.json().then(data => {
-          setSnackbarMessage(data.error || 'Credenciales invalidas');
-          setIsSnackbarOpen(true);
-        });
-      }
     })
     .catch(error => {
-      console.log("error");
-      setSnackbarMessage(error.message);
+      setSnackbarMessage('Credenciales invalidas');
       setIsSnackbarOpen(true);
     });
   };

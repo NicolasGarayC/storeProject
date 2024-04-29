@@ -114,34 +114,34 @@ function BookList() {
         units: item.quantity
       }))
     };
-  
+
     fetch('shop/purchasebooks', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(purchaseDetails),
     })
-    .then(response => {
-      if (response.status === 200) {
-        response.json().then(data => {
-          setSnackbarMessage('Artículos comprados con éxito.');
-          setIsSnackbarOpen(true);
-          setCart([]);
-          setIsModalOpen(false);
-          fetchBooks();
-        });
-      } else {
-        response.json().then(data => {
-          setSnackbarMessage(data.error);
-          setIsSnackbarOpen(true);
-        });
-      }
-    })
-    .catch(error => {
-      setSnackbarMessage(error.message);
-      setIsSnackbarOpen(true);
-    });
+      .then(response => {
+        if (response.status === 200) {
+          response.json().then(data => {
+            setSnackbarMessage('Artículos comprados con éxito.');
+            setIsSnackbarOpen(true);
+            setCart([]);
+            setIsModalOpen(false);
+            fetchBooks();
+          });
+        } else {
+          response.json().then(data => {
+            setSnackbarMessage(data.error);
+            setIsSnackbarOpen(true);
+          });
+        }
+      })
+      .catch(error => {
+        setSnackbarMessage(error.message);
+        setIsSnackbarOpen(true);
+      });
   };
-  
+
   const removeFromCart = (bookId) => {
     setCart(currentCart => currentCart.filter(item => item.book.id !== bookId));
   };
@@ -173,50 +173,52 @@ function BookList() {
       <div className='form-div'>
         <form onSubmit={handleSearch} style={{ margin: '20px' }}>
           <div className="date-picker-container">
+            <div class="sub-container">
+              <div className="date-picker">
+                <TextField label="Título" variant="outlined" size="small" style={{ marginRight: '10px' }}
+                  value={searchCriteria.title}
+                  onChange={(e) => setSearchCriteria({ ...searchCriteria, title: e.target.value })} />
+              </div>
+              <div className="date-picker">
+                <TextField label="ISBN" variant="outlined" size="small" value={searchCriteria.isbn}
+                  onChange={(e) => setSearchCriteria({ ...searchCriteria, isbn: e.target.value })} />
 
-            <div className="date-picker">
-              <TextField label="Título" variant="outlined" size="small" style={{ marginRight: '10px' }}
-                value={searchCriteria.title}
-                onChange={(e) => setSearchCriteria({ ...searchCriteria, title: e.target.value })} />
-            </div>
-            <div className="date-picker">
-              <TextField label="ISBN" variant="outlined" size="small" value={searchCriteria.isbn}
-                onChange={(e) => setSearchCriteria({ ...searchCriteria, isbn: e.target.value })} />
+              </div>
+              <div className="date-picker">
+                <TextField label="Precio Mínimo" type="number" variant="outlined" size="small" style={{ marginRight: '10px' }}
+                  value={searchCriteria.minPrice}
+                  onChange={(e) => setSearchCriteria({ ...searchCriteria, minPrice: e.target.value })} />
+
+              </div>
+              <div className="date-picker">
+                <TextField label="Precio Máximo" type="number" variant="outlined" size="small" style={{ marginRight: '10px' }}
+                  value={searchCriteria.maxPrice}
+                  onChange={(e) => setSearchCriteria({ ...searchCriteria, maxPrice: e.target.value })} />
+              </div>
+              <div className="date-picker">
+                <TextField label="Autor" variant="outlined" size="small" style={{ marginRight: '10px' }}
+                  value={searchCriteria.author}
+                  onChange={(e) => setSearchCriteria({ ...searchCriteria, author: e.target.value })} />
+              </div>
 
             </div>
-            <div className="date-picker">
-              <TextField label="Precio Mínimo" type="number" variant="outlined" size="small" style={{ marginRight: '10px' }}
-                value={searchCriteria.minPrice}
-                onChange={(e) => setSearchCriteria({ ...searchCriteria, minPrice: e.target.value })} />
-
-            </div>
-            <div className="date-picker">
-              <TextField label="Precio Máximo" type="number" variant="outlined" size="small" style={{ marginRight: '10px' }}
-                value={searchCriteria.maxPrice}
-                onChange={(e) => setSearchCriteria({ ...searchCriteria, maxPrice: e.target.value })} />
-            </div>
-            <div className="date-picker">
-              <TextField label="Autor" variant="outlined" size="small" style={{ marginRight: '10px' }}
-                value={searchCriteria.author}
-                onChange={(e) => setSearchCriteria({ ...searchCriteria, author: e.target.value })} />
-            </div>
-
-
-            <div className="date-picker">
-              <p>Fecha de Publicación Desde:</p>
-              <DatePicker
-                className="custom-date-picker"
-                selected={searchCriteria.publicationDateStart}
-                onChange={(date) => handleDateChange('publicationDateStart', date)}
-              />
-            </div>
-            <div className="date-picker">
-              <p>Fecha de Publicación Hasta:</p>
-              <DatePicker
-                className="custom-date-picker"
-                selected={searchCriteria.publicationDateEnd}
-                onChange={(date) => handleDateChange('publicationDateEnd', date)}
-              />
+            <div class="sub-container">
+              <div className="date-picker">
+                <p>Fecha de Publicación Desde:</p>
+                <DatePicker
+                  className="custom-date-picker"
+                  selected={searchCriteria.publicationDateStart}
+                  onChange={(date) => handleDateChange('publicationDateStart', date)}
+                />
+              </div>
+              <div className="date-picker">
+                <p>Fecha de Publicación Hasta:</p>
+                <DatePicker
+                  className="custom-date-picker"
+                  selected={searchCriteria.publicationDateEnd}
+                  onChange={(date) => handleDateChange('publicationDateEnd', date)}
+                />
+              </div>
             </div>
           </div>
           <Button type="submit" variant="contained" color="primary">Buscar</Button>
