@@ -173,7 +173,7 @@ function BookList() {
       <div className='form-div'>
         <form onSubmit={handleSearch} style={{ margin: '20px' }}>
           <div className="date-picker-container">
-            <div class="sub-container">
+            <div className="sub-container">
               <div className="date-picker">
                 <TextField label="Título" variant="outlined" size="small" style={{ marginRight: '10px' }}
                   value={searchCriteria.title}
@@ -202,7 +202,7 @@ function BookList() {
               </div>
 
             </div>
-            <div class="sub-container">
+            <div className="sub-container">
               <div className="date-picker">
                 <p>Fecha de Publicación Desde:</p>
                 <DatePicker
@@ -221,7 +221,7 @@ function BookList() {
               </div>
             </div>
           </div>
-          <Button type="submit" variant="contained" color="primary">Buscar</Button>
+          <Button type="submit" variant="contained" color="primary" >Buscar</Button>
         </form>
       </div>
       <div className="book-container">
