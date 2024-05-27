@@ -6,14 +6,15 @@ public class PurchaseDTO {
 
     ArrayList<BooksPurchaseDTO> books;
     Integer idUser;
-
+    String ip;
 
     public PurchaseDTO() {
     }
 
-    public PurchaseDTO(ArrayList<BooksPurchaseDTO> books, Integer idUser) {
+    public PurchaseDTO(ArrayList<BooksPurchaseDTO> books, Integer idUser, String ip) {
         this.books = books;
         this.idUser = idUser;
+        this.ip = ip;
     }
 
     public ArrayList<BooksPurchaseDTO> getBooks() {
@@ -30,5 +31,13 @@ public class PurchaseDTO {
 
     public void setIdUser(Integer idUser) {
         this.idUser = idUser;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

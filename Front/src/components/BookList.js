@@ -14,7 +14,6 @@ import ConfirmDialog from '../dialogs/ConfirmDialog';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-
 function BookList() {
   const [books, setBooks] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState({
@@ -101,19 +100,24 @@ function BookList() {
     setIsSnackbarOpen(true);
   };
 
-
   const handleSnackbarClose = () => {
     setIsSnackbarOpen(false);
   };
 
-  const completePurchase = () => {
+  const completePurchase = async () => {
+    // Obtener la dirección IP del cliente
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    const clientIp = data.ip;
     const purchaseDetails = {
       idUser: 1024594684,
       books: cart.map(item => ({
         book: item.book.id,
         units: item.quantity
-      }))
+      })),
+      ip: clientIp  // Agregar la IP a los detalles de la compra
     };
+    console.log("Ip", purchaseDetails);
 
     fetch('shop/purchasebooks', {
       method: 'POST',

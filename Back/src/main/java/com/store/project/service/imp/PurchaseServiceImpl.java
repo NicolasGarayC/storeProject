@@ -1,5 +1,5 @@
 package com.store.project.service.imp;
-
+import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.store.project.model.Book;
 import com.store.project.model.Card;
 import com.store.project.model.dto.BooksPurchaseDTO;
@@ -9,10 +9,11 @@ import com.store.project.repository.CardRepository;
 import com.store.project.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.store.project.model.PurchaseCosmosDb;
 
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.List;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
@@ -21,6 +22,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private CosmosTemplate cosmosTemplate;
 
     @Override
     public String buyBooks(PurchaseDTO books) {
@@ -35,6 +39,7 @@ public class PurchaseServiceImpl implements PurchaseService {
             Double balance = card.getBalance();
 
             List<Book> booksToUpdate = new ArrayList<>();
+            Map<String, String> booksCosmos = new HashMap<>();
             for (BooksPurchaseDTO bookPurchaseDTO : books.getBooks()) {
                 Optional<Book> bookOptional = bookRepository.findById(bookPurchaseDTO.getBook());
                 if (bookOptional.isEmpty()) {
@@ -47,6 +52,7 @@ public class PurchaseServiceImpl implements PurchaseService {
                 totalPrice += tempBook.getPrice() * bookPurchaseDTO.getUnits();
                 tempBook.setUnitsAvailable(tempBook.getUnitsAvailable() - bookPurchaseDTO.getUnits());
                 booksToUpdate.add(tempBook);
+                booksCosmos.put(String.valueOf(tempBook.getIsbn()), tempBook.getIsbn());
             }
 
             if (balance < totalPrice) {
@@ -56,8 +62,21 @@ public class PurchaseServiceImpl implements PurchaseService {
             for (Book book : booksToUpdate) {
                 bookRepository.save(book);
             }
+
             card.setBalance(balance - totalPrice);
             cardRepository.save(card);
+
+        PurchaseCosmosDb purchase = new PurchaseCosmosDb();
+        purchase.setId(UUID.randomUUID().toString()); // Genera un ID único
+        purchase.setUser(books.getIdUser());
+        purchase.setValue(totalPrice);
+
+        String currentDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
+        purchase.setDate(currentDate);
+
+        purchase.setIp(books.getIp());
+        purchase.setIsbns(booksCosmos);
+        cosmosTemplate.insert("/rgstoredbcontainer", purchase);
 
             return "Purchase successful";
     }
